@@ -656,39 +656,55 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
     <script src="app.js"></script>
     <script >
-        document.addEventListener("DOMContentLoaded", () => {
-    const trendingList = document.querySelector(".trending__list");
+        document.addEventListener("DOMContentLoaded", async () => {
+    const swiperWrapper = document.querySelector(".swiper-wrapper");
 
     async function fetchTrendingAnime() {
         try {
             const response = await fetch("https://animeapi-lyart.vercel.app/trending");
             const data = await response.json();
 
-            trendingList.innerHTML = ""; // Clear existing content
+            swiperWrapper.innerHTML = ""; // Clear existing placeholder slides
 
             data.forEach(anime => {
-                const animeItem = document.createElement("div");
-                animeItem.classList.add("trending__item");
-                animeItem.innerHTML = `
-                    <a href="${anime.url}" class="trending__link">
-                        <div class="trending__image">
+                const slide = document.createElement("div");
+                slide.classList.add("swiper-slide");
+                slide.innerHTML = `
+                    <div class="anime-card">
+                        <div class="anime-image">
                             <img src="${anime.image}" alt="${anime.title}">
                         </div>
-                        <div class="trending__info">
-                            <h3 class="trending__title">${anime.title}</h3>
-                            <p class="trending__episodes">Episodes: ${anime.episodes}</p>
+                        <div class="anime-info">
+                            <h3 class="anime-title">${anime.title}</h3>
+                            <p class="anime-release">Episodes: ${anime.episodes}</p>
                         </div>
-                    </a>
+                    </div>
                 `;
-                trendingList.appendChild(animeItem);
+                swiperWrapper.appendChild(slide);
             });
+
+            // Initialize Swiper (Ensure Swiper is loaded before calling this)
+            new Swiper(".swiper", {
+                slidesPerView: 3,
+                spaceBetween: 20,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+            });
+
         } catch (error) {
             console.error("Error fetching trending anime:", error);
-            trendingList.innerHTML = "<p>Failed to load trending anime.</p>";
+            swiperWrapper.innerHTML = "<p>Failed to load trending anime.</p>";
         }
     }
 
-    fetchTrendingAnime(); // Load the trending anime on page load
+    fetchTrendingAnime(); // Load trending anime on page load
 });
     </script>
 </body>
