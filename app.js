@@ -16,7 +16,9 @@ const searchResultsContainer = document.querySelector('.search-results');
 
 // Initialize the app when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', initializeApp);
-
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementsByClassName('.bbox').innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Jung_sin.jpg" alt="Image">';
+}); 
 async function initializeApp() {
   // Initialize all sections
   await Promise.all([
