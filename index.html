@@ -657,8 +657,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
     <script src="app.js"></script>
     <script >
-        document.querySelector('.bbox').innerHTML = '<img src="https://static.wikia.nocookie.net/characterprofile/images/3/3a/TheGrinch.png/revision/latest/scale-to-width-down/1299?cb=20210121054803" alt="Image">';
-        // Function to fetch and display trending anime
+        document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector('.bbox').innerHTML = '<img src="yhttps://upload.wikimedia.org/wikipedia/commons/8/8e/Jung_sin.jpg" alt="Image">';
+}); 
+         // Function to fetch and display trending anime
 async function displayTrendingAnime() {
   try {
     // Fetch data from the API
