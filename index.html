@@ -655,5 +655,41 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
     <script src="app.js"></script>
+    <script >
+        document.addEventListener("DOMContentLoaded", () => {
+    const trendingList = document.querySelector(".trending__list");
+
+    async function fetchTrendingAnime() {
+        try {
+            const response = await fetch("https://animeapi-lyart.vercel.app/trending");
+            const data = await response.json();
+
+            trendingList.innerHTML = ""; // Clear existing content
+
+            data.forEach(anime => {
+                const animeItem = document.createElement("div");
+                animeItem.classList.add("trending__item");
+                animeItem.innerHTML = `
+                    <a href="${anime.url}" class="trending__link">
+                        <div class="trending__image">
+                            <img src="${anime.image}" alt="${anime.title}">
+                        </div>
+                        <div class="trending__info">
+                            <h3 class="trending__title">${anime.title}</h3>
+                            <p class="trending__episodes">Episodes: ${anime.episodes}</p>
+                        </div>
+                    </a>
+                `;
+                trendingList.appendChild(animeItem);
+            });
+        } catch (error) {
+            console.error("Error fetching trending anime:", error);
+            trendingList.innerHTML = "<p>Failed to load trending anime.</p>";
+        }
+    }
+
+    fetchTrendingAnime(); // Load the trending anime on page load
+});
+    </script>
 </body>
 </html>
