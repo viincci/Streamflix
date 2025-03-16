@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streamflix - Anime Streaming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.css">
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #e50914;
+            --secondary-color: #222;
+            --background-color: #141414;
+            --text-color: #fff;
+            --text-secondary: #aaa;
+            --overlay-color: rgba(0, 0, 0, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--secondary-color);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .logo span {
+            color: var(--text-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .search-box {
+            display: flex;
+            margin-left: 20px;
+        }
+
+        .search-box input {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            width: 250px;
+        }
+
+        .search-box button {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 0 4px 4px 0;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-box button:hover {
+            background-color: #f40612;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 550px;
+            background-image: linear-gradient(var(--overlay-color), var(--overlay-color)), url('https://cdnjs.cloudflare.com/ajax/libs/placeholder-imgs/1.1.0/1350x600/1.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #f40612;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 40px 0;
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* Swiper Styles */
+        .swiper {
+            width: 100%;
+            padding: 10px 5px 30px;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: var(--primary-color);
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            top: 45%;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 18px;
+        }
+
+        /* Anime Card Styles */
+        .anime-card {
+            background-color: var(--secondary-color);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .anime-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .anime-image {
+            position: relative;
+            height: 0;
+            padding-top: 140%; /* Aspect ratio for anime posters */
+            overflow: hidden;
+        }
+
+        .anime-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .anime-info {
+            padding: 12px;
+        }
+
+        .anime-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .anime-release, .anime-sub-dub {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .anime-rating {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .anime-rating i {
+            color: gold;
+            margin-right: 5px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--secondary-color);
+            padding: 40px 0 20px;
+            margin-top: 40px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section ul li a {
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-icons {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background-color: var(--background-color);
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: var(--text-secondary);
+        }
+
+        /* Search Results Styles */
+        .search-results {
+            display: none;
+            padding: 20px;
+            color: white;
+        }
+        
+        .search-results h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .search-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .no-results, .error {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+        }
+        
+        .back-button {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .back-button:hover {
+            background-color: #f40612;
+        }
+        
+        .first-result {
+            border: 2px solid #e50914;
+            transform: scale(1.02);
+            transition: all 0.3s ease;
+        }
+        
+        .episode-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #e50914;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .error-card {
+            background-color: rgba(255, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        /* Loader Styles */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .hero {
+                height: 450px;
+            }
+            .hero h1 {
+                font-size: 36px;
+            }
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul, .search-box {
+                display: none;
+            }
+            .mobile-menu {
+                display: block;
+            }
+            .hero {
+                height: 400px;
+                padding: 0 20px;
+            }
+            .hero h1 {
+                font-size: 30px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+            .section-title {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                height: 350px;
+            }
+            .hero h1 {
+                font-size: 24px;
+            }
+            .btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">Stream<span>flix</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Anime</a></li>
+                    <li><a href="#">Movies</a></li>
+                    <li><a href="#">TV Series</a></li>
+                    <li><a href="#">My List</a></li>
+                </ul>
+            </nav>
+            <div class="search-box">
+                <input type="text" placeholder="Search anime...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Discover Amazing Anime</h1>
+                <p>Watch thousands of anime episodes, movies, and exclusive content. Stream anytime, anywhere.</p>
+                <a href="#" class="btn">Start Watching <i class="fas fa-play"></i></a>
+            </div>
+        </section>
+
+        <div class="container main-content">
+            <!-- Trending Section -->
+            <section class="trending">
+                <h2 class="section-title">Trending Now</h2>
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <!-- Anime cards will be inserted here by JS -->
+                        <div class="swiper-slide">
+                            <div class="anime-card">
+                                <div class="anime-image">
+                                    <img src="https://cdnjs.cloudflare.com/ajax/libs/placeholder-imgs/1.1.0/200x300/1.jpg" alt="Loading...">
+                                </div>
+                                <div class="anime-info">
+                                    <h3 class="anime-title">Loading...</h3>
+                                    <p class="anime-release">Loading...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </section>
+
+            <!-- Recent Episodes Section -->
+            <section class="recent">
+                <h2 class="section-title">Recent Episodes</h2>
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <!-- Anime cards will be inserted here by JS -->
+                        <div class="swiper-slide">
+                            <div class="anime-card">
+                                <div class="anime-image">
+                                    <img src="https://cdnjs.cloudflare.com/ajax/libs/placeholder-imgs/1.1.0/200x300/2.jpg" alt="Loading...">
+                                </div>
+                                <div class="anime-info">
+                                    <h3 class="anime-title">Loading...</h3>
+                                    <p class="anime-release">Loading...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </section>
+
+            <!-- Popular Section -->
+            <section class="popular">
+                <h2 class="section-title">Popular Anime</h2>
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <!-- Anime cards will be inserted here by JS -->
+                        <div class="swiper-slide">
+                            <div class="anime-card">
+                                <div class="anime-image">
+                                    <img src="https://cdnjs.cloudflare.com/ajax/libs/placeholder-imgs/1.1.0/200x300/3.jpg" alt="Loading...">
+                                </div>
+                                <div class="anime-info">
+                                    <h3 class="anime-title">Loading...</h3>
+                                    <p class="anime-release">Loading...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Search Results -->
+        <div class="container search-results">
+            <!-- Search results will be inserted here by JS -->
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>About Streamflix</h3>
+                    <p>Streamflix is your ultimate destination for anime streaming. Watch the latest episodes and movies in HD quality.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Browse Anime</a></li>
+                        <li><a href="#">New Releases</a></li>
+                        <li><a href="#">Popular</a></li>
+                        <li><a href="#">My List</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Adventure</a></li>
+                        <li><a href="#">Comedy</a></li>
+                        <li><a href="#">Drama</a></li>
+                        <li><a href="#">Fantasy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Help & Support</h3>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Streamflix. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
