@@ -526,6 +526,7 @@
         </section>
 
         <div class="container main-content">
+            <div class="bbox"></div>
             <!-- Trending Section -->
             <section class="trending">
                 <h2 class="section-title">Trending Now</h2>
@@ -656,6 +657,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
     <script src="app.js"></script>
     <script >
+        document.querySelector('.bbox').innerHTML = '<img src="https://static.wikia.nocookie.net/characterprofile/images/3/3a/TheGrinch.png/revision/latest/scale-to-width-down/1299?cb=20210121054803" alt="Image">';
         // Function to fetch and display trending anime
 async function displayTrendingAnime() {
   try {
