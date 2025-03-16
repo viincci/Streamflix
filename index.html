@@ -7,13 +7,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.css">
     <script src="app.js"></script>
-    <script >
-        const response = document.getElementsByClassName(".bbox");
-        console.log(response) 
-        
-        
-        
+    
+        <script>
+      function changeText() {
+        const p = document.getElementById("pid");
+
+        p.style.color = "red";
+        p.style.fontSize = "18pt";
+      }
     </script>
+        
+        
+        
+   
     <style>
         /* Global Styles */
         :root {
@@ -534,7 +540,7 @@
         </section>
 
         <div class="container main-content">
-            <div class="bbox">BBox</div>
+            <div class="bbox" id="pid">BBox</div>
             <!-- Trending Section -->
             <section class="trending">
                 <h2 class="section-title">Trending Now</h2>
